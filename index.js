@@ -6,6 +6,9 @@ const URL = require("./models/url");
 const app = express();
 const PORT = 8100;
 
+const captureDeviceInfo = require('./middleware/url');
+app.use(captureDeviceInfo);
+
 connectToMongoDB("mongodb://localhost:27017/short-url").then(() =>
     console.log("Mongodb connected")
 );
@@ -24,6 +27,8 @@ app.get("/:shortId", async (req, res) => {
             $push: {
                 visitHistory: {
                     timestamp: Date.now(),
+                    geolocation: req.geolocation,
+                    deviceType: req.deviceType
                 },
             },
         }
