@@ -9,8 +9,8 @@ async function handelGenerateNewShortUrl(req, res) {
         redirectURL: body.url,
         visitHistory: []
     })
-
-    return res.json({ id: shortID })
+    const shortUrl = `https://url-shortener-ojkp.onrender.com/${shortID}`;
+    return res.json({ id: shortID, shortUrl: shortUrl })
 }
 
 async function handelGetAnalytics(req, res) {
