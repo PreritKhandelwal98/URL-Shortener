@@ -1,15 +1,16 @@
+require('dotenv').config();
 const express = require("express");
 const { connectToMongoDB } = require("./connect");
 const urlRoute = require("./routes/url");
 const URL = require("./models/url");
 
 const app = express();
-const PORT = 8100;
+const PORT = process.env.PORT || 5000;
 
 const captureDeviceInfo = require('./middleware/url');
 app.use(captureDeviceInfo);
 
-connectToMongoDB("mongodb://localhost:27017/short-url").then(() =>
+connectToMongoDB(process.env.ONLINEDB_URL).then(() =>
     console.log("Mongodb connected")
 );
 
