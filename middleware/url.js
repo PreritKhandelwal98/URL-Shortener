@@ -1,16 +1,37 @@
 const useragent = require('useragent');
 const geoip = require('geoip-lite');
+const requestIp = require('request-ip');
 
 // Middleware to capture geolocation and device type
 const captureDeviceInfo = (req, res, next) => {
-    const userAgent = useragent.parse(req.headers['user-agent']);
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const geo = geoip.lookup(ip);
+    try {
+        const userAgentString = req.headers['user-agent'];
+        const clientIp = requestIp.getClientIp(req);
 
-    req.deviceType = userAgent.device.toString();
-    req.geolocation = geo ? `${geo.city}, ${geo.region}, ${geo.country}` : 'Unknown';
 
-    next();
+
+        if (!userAgentString || !clientIp) {
+            throw new Error("User-Agent header or IP address not found");
+        }
+
+        const userAgent = useragent.parse(userAgentString);
+        const geo = geoip.lookup(clientIp);
+
+
+
+        req.deviceType = userAgent.device.toString();
+        req.geolocation = geo ? `${geo.city}, ${geo.region}, ${geo.country}` : 'Unknown';
+
+
+
+        next();
+    } catch (error) {
+        console.error("Error in captureDeviceInfo middleware:", error);
+        // Proceed without setting req.geolocation and req.deviceType
+        req.deviceType = 'Unknown';
+        req.geolocation = 'Unknown';
+        next();
+    }
 };
 
 module.exports = captureDeviceInfo;

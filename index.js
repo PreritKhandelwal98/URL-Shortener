@@ -19,22 +19,34 @@ app.use(express.json());
 app.use("/url", urlRoute);
 
 app.get("/:shortId", async (req, res) => {
-    const shortId = req.params.shortId;
-    const entry = await URL.findOneAndUpdate(
-        {
-            shortId,
-        },
-        {
-            $push: {
-                visitHistory: {
-                    timestamp: Date.now(),
-                    geolocation: req.geolocation,
-                    deviceType: req.deviceType
-                },
+    try {
+        const shortId = req.params.shortId;
+        console.log(shortId);
+        const entry = await URL.findOneAndUpdate(
+            {
+                shortId
             },
+            {
+                $push: {
+                    visitHistory: {
+                        timestamp: Date.now(),
+                        geolocation: req.geolocation,
+                        deviceType: req.deviceType
+                    },
+                },
+            }
+        );
+
+        if (!entry) {
+            return res.status(404).send("URL not found");
         }
-    );
-    res.redirect(entry.redirectURL);
+
+        res.redirect(entry.redirectURL);
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
+
 
 app.listen(PORT, () => console.log(`Server Started at PORT:${PORT}`));
