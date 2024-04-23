@@ -36,7 +36,8 @@ app.get("/:shortId", async (req, res) => {
                 },
             }
         );
-
+        // console.log(req.socket.remoteAddress);
+        // console.log(req);
         if (!entry) {
             return res.status(404).send("URL not found");
         }
