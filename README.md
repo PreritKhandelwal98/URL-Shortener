@@ -1,3 +1,5 @@
+## Live Demo: [Demo](https://url-shortener-ojkp.onrender.com)
+
 # URL Shortener Web App
 
 This web application is a simple URL shortener built with Node.js and hosted on Render. It allows users to shorten URLs, visit the shortened links, and view analytics for each shortened URL.
@@ -30,9 +32,6 @@ This web application is a simple URL shortener built with Node.js and hosted on 
   - `ipAddress`: IP address of the visitor.
   - `deviceType`: Device type of the visitor (e.g., mobile, desktop).
 
-## Hosted URL
-
-You can access the web application at: [Hosted URL](https://url-shortener-ojkp.onrender.com/url)
 
 Feel free to try it out using any API testing service like Postman, RapidAPI, or Thunder Client.
 
