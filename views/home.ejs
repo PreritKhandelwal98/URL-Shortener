@@ -110,6 +110,15 @@
             <p>Welcome to our URL Shortener service. Enter your long URL below to get a shortened version:</p>
         </div>
         <div>
+            <% if (locals.id) { %>
+                <p>URL Generated: <button><a href="https://url-shortener-ojkp.onrender.com/<%= id %>"
+                            target="_blank">Generated
+                            Link</a></button>
+                </p>
+                <a href="/">Go back </a>
+                <% } %>
+        </div>
+        <div>
             <form method="POST" action="/url">
                 <label for="url">Enter your URL:</label>
                 <input type="text" id="url" name="url" placeholder="https://example.com">
