@@ -1,19 +1,26 @@
 const shortid = require('shortid')
 const URL = require('../models/url')
-async function handelGenerateNewShortUrl(req, res) {
+
+async function handleGenerateNewShortUrl(req, res) {
     const body = req.body;
     if (!body.url) return res.status(400).json({ error: 'url is required' })
     const shortID = shortid(8);
     await URL.create({
         shortId: shortID,
         redirectURL: body.url,
-        visitHistory: []
+        visitHistory: [],
+        createdBy: req.user._id,
     })
+
     const shortUrl = `https://url-shortener-ojkp.onrender.com/${shortID}`;
-    return res.json({ id: shortID, shortUrl: shortUrl })
+
+    return res.render("home", {
+        id: shortID,
+        shortUrl: shortUrl
+    });
 }
 
-async function handelGetAnalytics(req, res) {
+async function handleGetAnalytics(req, res) {
     const shortId = req.params.shortId;
     const result = await URL.findOne({ shortId });
     return res.json({
@@ -22,6 +29,6 @@ async function handelGetAnalytics(req, res) {
     })
 }
 module.exports = {
-    handelGenerateNewShortUrl,
-    handelGetAnalytics
+    handleGenerateNewShortUrl,
+    handleGetAnalytics
 }

@@ -1,23 +1,38 @@
 require('dotenv').config();
+
 const express = require("express");
-const { connectToMongoDB } = require("./connect");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+
 const urlRoute = require("./routes/url");
+const staticRoute = require("./routes/staticRouter");
+const userRoute = require("./routes/user");
+
+const { connectToMongoDB } = require("./connect");
+
 const URL = require("./models/url");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const captureDeviceInfo = require('./middleware/url');
+const captureDeviceInfo = require('./middlewares/url');
+const { restrictToLoggedinUserOnly, checkAuth } = require("./middlewares/auth");
+
 app.use(captureDeviceInfo);
+app.use(cookieParser());
 
 connectToMongoDB(process.env.ONLINEDB_URL).then(() =>
     console.log("Mongodb connected")
 );
 
+app.set("view engine", "ejs");
+app.set("views", path.resolve("./views"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.use("/url", urlRoute);
-
+app.use("/url", restrictToLoggedinUserOnly, urlRoute);
+app.use("/user", userRoute);
+app.use("/", checkAuth, staticRoute);
 app.get("/:shortId", async (req, res) => {
     try {
         const shortId = req.params.shortId;

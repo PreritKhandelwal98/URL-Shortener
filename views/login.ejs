@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f2f2;
+            /* Background color matching the even row background color */
+        }
+
+        h1 {
+            color: #04AA6D;
+            /* Heading color matching the table header color */
+            text-align: center;
+            /* Center align the text */
+        }
+
+        form {
+            width: 300px;
+            /* Adjust width as needed */
+            margin: 0 auto;
+            /* Center align the form */
+            background-color: white;
+            /* Form background color */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
+        }
+
+        label {
+            color: #04AA6D;
+            /* Label color matching the table header color */
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 10px);
+            /* Adjust width to fill the container */
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #04AA6D;
+            /* Input border color matching the table header color */
+            border-radius: 5px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #04AA6D;
+            /* Button background color matching the table header color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #009688;
+            /* Button background color darker shade for hover effect */
+        }
+
+        .signup-link {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+            /* Adjust link color */
+        }
+
+        .signup-link:hover {
+            color: #333;
+            /* Adjust link color on hover */
+        }
+    </style>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+</head>
+
+<body>
+    <h1>Login</h1>
+    <form action="/user/login" method="post">
+        <label>Email</label>
+        <input type="text" required name="email" />
+        <label>Password</label>
+        <input type="password" required name="password" />
+
+        <button type="submit">Login</button>
+    </form>
+    <a class="signup-link" href="/signup">Don't have an account? Signup</a>
+</body>
+
+</html>

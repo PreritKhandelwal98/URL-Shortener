@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #04AA6D;
+            margin-top: 50px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .links-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #04AA6D;
+        }
+
+        /* Existing styles for table */
+        #customers {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        #customers td,
+        #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+
+        /* New styles for input and button */
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #04AA6D;
+        }
+
+        input[type="text"],
+        button[type="submit"],
+        button[type="button"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #04AA6D;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button[type="submit"] {
+            background-color: #04AA6D;
+            color: white;
+            cursor: pointer;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #009688;
+        }
+
+        button[type="button"] {
+            background-color: #f44336;
+            color: white;
+            cursor: pointer;
+        }
+
+        button[type="button"]:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <div>
+            <p>Welcome to our URL Shortener service. Enter your long URL below to get a shortened version:</p>
+        </div>
+        <div>
+            <form method="POST" action="/url">
+                <label for="url">Enter your URL:</label>
+                <input type="text" id="url" name="url" placeholder="https://example.com">
+                <button type="submit">Generate</button>
+            </form>
+        </div>
+
+        <div>
+            <p class="links-title">Links created by the user so far:</p>
+            <% if (locals.urls) { %>
+                <table id="customers">
+                    <thead>
+                        <tr>
+                            <th>Sr. No.</th>
+                            <th>Short ID</th>
+                            <th>Original Link</th>
+                            <th>Clicks</th>
+                            <th>Shortened Url</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% urls.forEach((url, index)=> { %>
+                            <tr>
+                                <td>
+                                    <%= index + 1 %>
+                                </td>
+                                <td>
+                                    <%= url.shortId %>
+                                </td>
+                                <td>
+                                    <%= url.redirectURL %>
+                                </td>
+                                <td>
+                                    <%= url.visitHistory.length %>
+                                </td>
+                                <td><a href="https://url-shortener-ojkp.onrender.com/<%= url.shortId %>"
+                                        target="_blank">Generated Link</a></td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <% } %>
+        </div>
+
+        <!-- Logout button -->
+        <div>
+            <button type="button" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <!-- Script to handle logout -->
+    <script>
+        function logout() {
+            // Clear all cookies
+            document.cookie.split(";").forEach(function (c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+
+            // Redirect to the login page
+            window.location.href = "/login";
+        }
+
+    </script>
+</body>
+
+</html>
