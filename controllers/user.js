@@ -17,9 +17,9 @@ async function handelUserLogin(req, res) {
     const { email, password } = req.body
     const user = await USER.findOne({ email, password });
     if (!user) {
-        res.render("login", {
+        return res.render("login", {
             error: "Invalid Username or Password"
-        })
+        });
     }
 
     const sessionId = uuidv4();
@@ -27,6 +27,7 @@ async function handelUserLogin(req, res) {
     res.cookie("uid", sessionId);
     return res.redirect("/");
 }
+
 
 module.exports = {
     handelUserSignup,
